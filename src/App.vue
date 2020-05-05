@@ -13,9 +13,23 @@
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+// import {reqBaseCategoryList, reqLogin} from '@/api'
 
 export default {
   name: 'App',
+
+  async mounted(){
+    //函数接口请求函数
+    //const result = await reqBaseCategoryList()
+    //console.log('result',result)
+    //const result2 = await reqLogin('13700000000','1111111')
+    //console.log('result2','result')
+
+    console.log(this.$store.state)
+    //测试通过异步action获取异步获取到vuex的state中
+    //this.$store.dispatch('getBaseCategoryList')
+
+  },
   components: {
     Header,
     Footer

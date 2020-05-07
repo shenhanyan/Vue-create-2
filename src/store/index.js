@@ -24,7 +24,7 @@ const getters = {
 }
 
 // 向外暴露store对象
-export default new Vuex.store({
+export default new Vuex.Store({
   mutations,
   actions,
   getters,

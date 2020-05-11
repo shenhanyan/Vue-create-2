@@ -3,6 +3,8 @@
 */
 import Home from '@/pages/Home'
 import Search from '@/pages/Search'
+import Detail from '@/pages/Detail'
+
 import Register from '@/pages/Register'
 import Login from '@/pages/Login'
 
@@ -25,6 +27,18 @@ export default [
       isHideFooter: true
     }
   },
+  {
+    name:'detail',  //是当前路由的名称
+    path:'/detail/:id',
+    component:Detail,
+  },
+  {
+    path:'/register',
+    component:Register,
+    meta:{
+      isHideFooter:true
+    }
+  }
   {
     path: '/login',
     component: Login,

@@ -33,7 +33,11 @@
       <div class="searchArea">
         <form action="###" class="searchForm">
           <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword"/>
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="search">搜索</button>
+          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="search">搜索</button><!-- 默认type为submit -->
+          <!-- 
+            绑定事件监听方式：@click.prevent 与 form上@submit.prevent作用是一样的
+            触发是事件方式：点击按钮或点击enter键(焦点在输入框)
+           -->
         </form>
       </div>
     </div>
@@ -49,6 +53,13 @@
       return {
         keyword: 'atguigu'
       }
+    },
+
+    mounted () {
+      // 在Header, 通过事件总线对象绑定事件监听来接收消息, 从而可以更新数据
+      this.$bus.$on('removeKeyword', () => {
+        this.keyword = ''
+      })
     },
 
     methods: {
@@ -115,11 +126,35 @@
           query: { keyword2: keyword.toUpperCase() }
         }).catch(() => {}) */
 
-        this.$router.replace({ // push是重写后的方法
+        // this.$router.replace({ // push是重写后的方法
+        //   name: 'search', 
+        //   params: { keyword: keyword==='' ? undefined : keyword },
+        //   query: { keyword2: keyword.toUpperCase() }
+        // })
+
+        const keyword = this.keyword
+
+        const location = { // push是重写后的方法
           name: 'search', 
-          params: { keyword: keyword==='' ? undefined : keyword },
-          query: { keyword2: keyword.toUpperCase() }
-        })
+        }
+        // 如果keyword有值, 指定params
+        if (keyword) {
+          location.params = {keyword}
+        }
+
+        // 同时还要携带当前原本的query
+        const {query} = this.$route
+        location.query = query
+
+        // 跳转到Search
+        // 如果当前在Search, 使用replace(), 否则使用push
+        // if (this.$route.name==="search") {
+        if (this.$route.path.indexOf('/search') === 0) {
+          this.$router.replace(location)
+        } else {
+          this.$router.push(location)
+        }
+
       }
     }
   }

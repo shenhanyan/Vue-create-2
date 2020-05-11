@@ -4,6 +4,7 @@
 */
 
 import ajax from './ajax'
+import mockAjax from './mockAjax'
 
 /*
 请求获取3级分类列表
@@ -34,3 +35,7 @@ export function reqLogin (mobile, password){
     })
     // return ajax.post('/user/passport/login',{moble,password})
 }
+
+/* mock接口对应的接口请求函数 */
+export const reqBanners = () => mockAjax('/banners')
+export const reqFloors = () => mockAjax('/floors')

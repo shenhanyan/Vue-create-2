@@ -1,17 +1,77 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
-    <div class="mask"></div>
+    <img :src="imgUrl" />
+    <div class="event" @mousemove="move" ref="event"></div>
+
+
+    <div class="mask" ref="mask"></div>
+
     <div class="big">
-      <img src="../images/s1.png" />
+      <img :src="bigUrl" ref="big" />
     </div>
-    <div class="small"></div>
-  </div>
+    
 </template>
 
 <script>
   export default {
     name: "Zoom",
+
+    props:{
+      bigUrl:String,
+      imgUrl:String
+    },
+
+    methods:{
+      move(event){
+        // 初始化left和top
+        let left = 0
+        let top = 0
+
+        //取出相关数据
+        //事件的坐标(相对于事件源div的左上角)
+
+        const {offsetX, offsetY} = event
+        console.log(offsetX, offsetY)
+        // mask的宽度
+        // const maskWidth = this.$ref.mask.clientWidth
+        const maskWidth = this.maskWidth
+
+        // 计算left
+        left = offsetX - maskWidth/2
+        // left值必须在什么区间[0,maskWidth]
+        if (left) {
+          left = 0
+        } else if (left>maskWidth){
+          left = maskWidth
+        }
+
+        // 计算top
+        top = offsetY - maskWidth/2
+        // top 值必须在什么区间[0，maskWidth]
+        if (top<0){
+          top = 0
+        } else if (top > maskWidth){
+          top = maskWidth
+        }
+
+        // 指定左侧遮罩的样式坐标
+        const maskDiv = this.$refs.mask
+        maskDiv.style.left = left + 'px'
+        maskDiv.style.top = left + 'px'
+
+        // 指定右侧大图标的样式坐标
+        const bigImg = this.$refs.big
+        bigImg.style.left = -2*left + 'px'
+        bigImg.style.top = -2*top + 'px'
+      }
+    },
+
+    mounted(){
+      //mask div 初始显示时是隐藏的
+      // this.maskWidth = this.$refs.clientWidth
+      this.maskWidth = this.$refs.event.clientWidth
+      console.log(this.maskWidth)
+    }
   }
 </script>
 

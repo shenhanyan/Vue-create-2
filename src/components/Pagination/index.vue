@@ -126,8 +126,10 @@ export default {
         /*
         将当前页码改为指定页码
         */
-       setCurrentPage(page){
-           //修改当前页码     一定要是更新自己data中的当前页码，而不是更新接收的currentPage属性
+       setCurrentPage(currentPage){
+           //  如果设置的就是当前页码，直接就结束
+           if (currentPage === this.myCurrentPage) return
+           // 一定要是更新自己的data中的当前页面，而不更新接收的currentpage属性
            this.myCurrentPage = currentPage
            // 通知外部父组件     分发vue自定义事件：通知父组件，当前页码变化了
            this.$emit('currentChange',currentPage)

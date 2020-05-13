@@ -1,7 +1,7 @@
 /* 
 管理商品详情信息的vuex子模块
 */
-import { reqProduct, reqAddToCart } from '@/api'
+import { reqProduct } from '@/api'
 
 const state = {
   detailInfo: {}, // 当前商品详情信息对象
@@ -28,6 +28,7 @@ const actions = {
     }
   },
 
+  
   /* 
   添加商品到购物车的异步action
   */

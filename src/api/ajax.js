@@ -10,6 +10,8 @@
  //import NProgress from 'nprogress/nprogress'//加载nprogress包中的nprogress.js
  import NProgress from 'nprogress' //加载nprogress 包中的nprogress.js  内部配置了“main”；“nprogress.js"
  import 'nprogress/nprogress.css'  //加载nprogress 包中的nprogress.css
+ import store from '@/store'
+
 
  // 配置不显示右上角的旋转进度条，只显示水平进度条
  NProgress.configure({ showSpinner: false})
@@ -25,11 +27,12 @@
 
  //axios请求拦截器
  instance.interceptors.request.use(config =>{
-     console.log('请求拦截器执行')
+    //  console.log('请求拦截器执行')
 
      /* 2, 显示请求进度条 */
      NProgress.start()
-
+        /*  5. 每次请求都携带一个userTempId请求头, 数据值在state中 */
+     config.headers['userTempId'] = store.state.user.userTempId
      return config
  })
 

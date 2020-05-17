@@ -4,7 +4,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-
+import store from '@/store'
 
 // 声明使用vue插件
 Vue.use(VueRouter)
@@ -53,5 +53,30 @@ export default new VueRouter({
     return { x: 0, y: 0 }  // 在跳转路由时, 滚动条自动滚动到x轴和y轴的起始位置
   }
 })
+
+// 所有需要进行登陆检查的路由路径的数组
+const checkPaths = ['/trade', '/pay', '/center']  // 所有以它开头的路径都需要检查
+
+/* a.只有登陆了, 才能查看交易/支付/个人中心界面 */
+router.beforeEach((to, from, next) => { // 在即将跳转到目标前回调
+  const targetPath = to.path  // 有可能是/paysuccess  /center/myorder
+
+  // 如果目标路由是需要进行登陆检查的
+  // const isCheckPath = !!checkPaths.find(path => targetPath.indexOf(path)===0)
+  const isCheckPath = checkPaths.some(path => targetPath.indexOf(path)===0)
+
+  if (isCheckPath) {
+    // 如果已经登陆了, 放行
+    if (store.state.user.userInfo.name) {
+      next()
+    } else { // 如果没有登陆, 强制自动跳转到登陆页面
+      next('/login?redirect=' + targetPath)
+    }
+  } else { // 如果目标路由不需要进行登陆检查, 直接放行
+    next()
+  }
+})
+
+export default router
 
 

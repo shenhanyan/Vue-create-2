@@ -21,6 +21,8 @@ export function reqBaseCategoryList(){
     // return ajax.get ('/product/getBaseCategoryList')
 }
 
+
+
 /*
 
 请求登录
@@ -95,3 +97,69 @@ export const reqDeleteCartItem = () => ajax.delete(`/cart/deleteCart/${skuId}`)
   url: `/cart/deleteCart/${skuId}`,
   method: 'DELETE'
 }) */
+
+/* 
+请求登陆
+/api/user/passport/login
+POST
+*/
+export function reqLogin (mobile, password) {
+    return ajax({
+      method: 'POST',
+      url: '/user/passport/login',
+      data: {mobile, password}
+    })
+  
+    // return ajax.post('/user/passport/login', {mobile, password})
+  }
+  
+  /* 
+  请求注册
+  /api/user/passport/register  POST
+  */
+  // export const reqRegister = ({mobile, password, code}) => ajax.post('/user/passport/register', {mobile, password, code})
+  export const reqRegister = (userInfo) => ajax.post('/user/passport/register', userInfo)
+  
+  /* 
+  退出登陆
+  /api/user/passport/logout
+  */
+  export const reqLogout = () => ajax('/user/passport/logout')
+  
+  /* 
+  获取我的订单列表
+  /api/order/auth/{page}/{limit}  GET
+  */
+  export const reqMyOrders = (page, limit) => ajax(`/order/auth/${page}/${limit}`)
+  
+  // reqMyOrders(1, 3)
+  
+  
+  /* 
+  获取订单交易页信息
+  /api/order/auth/trade  GET
+  */
+  export const reqTradeInfo = () => ajax('/order/auth/trade')
+  
+  /* 
+  提交订单
+  /api/order/auth/submitOrder?tradeNo={tradeNo} POST
+  */
+  export const reqSubmitOrder = (tradeNo, orderInfo) => ajax({
+    url: '/order/auth/submitOrder',
+    method: 'POST',
+    params: {tradeNo},  // 指定的是请求的query参数
+    data: orderInfo, // 指定请求体数据对象  ==> 当前是包含订单信息
+  }) // 当前是基于axios语法的配置, 而不vue-router
+  
+  /* 
+  获取订单支付信息
+  /api/payment/weixin/createNative/{orderId}  GET
+  */
+  export const reqPayInfo = (orderId) => ajax(`/payment/weixin/createNative/${orderId}`)
+  
+  /* 
+  查询支付订单状态
+  /api/payment/weixin/queryPayStatus/{orderId} GET
+  */
+  export const reqOrderStatus = (orderId) => ajax(`/payment/weixin/queryPayStatus/${orderId}`)
